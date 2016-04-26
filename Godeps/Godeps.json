@@ -1,0 +1,25 @@
+{
+	"ImportPath": "github.com/StackPointCloud/oneandone-cloudserver-cli",
+	"GoVersion": "go1.6",
+	"GodepVersion": "v60",
+	"Deps": [
+		{
+			"ImportPath": "github.com/1and1/oneandone-cloudserver-sdk-go",
+			"Rev": "a0fe6f0a330164bd313890f3cabec3d8173db116"
+		},
+		{
+			"ImportPath": "github.com/codegangsta/cli",
+			"Comment": "v1.14.0-7-g4733699",
+			"Rev": "4733699ce30faa633c4db36ebfbe427963593d7d"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-runewidth",
+			"Comment": "v0.0.1",
+			"Rev": "d6bea18f789704b5f83375793155289da36a3c7f"
+		},
+		{
+			"ImportPath": "github.com/olekukonko/tablewriter",
+			"Rev": "cca8bbc0798408af109aaaa239cbd2634846b340"
+		}
+	]
+}
