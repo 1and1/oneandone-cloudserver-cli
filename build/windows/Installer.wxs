@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="*" Name="1&amp;1 Cloud Server CLI" Language="1033" Version="$(var.Version)" Manufacturer="1&amp;1 Internet SE" UpgradeCode="4d63ba58-cff0-4406-84ee-1e80aedd266b">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Manufacturer="1&amp;1 Internet SE" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Property Id="INSTALLDIR">
+      <RegistrySearch Id="OneAndOneCLIRegistry" Type="directory" Root="HKLM" Key="Software\1and1\CLI" Name="InstallDir" />
+    </Property>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="oneandone" Name="1and1">
+          <Directory Id="INSTALLDIR" Name="CLI" />
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <DirectoryRef Id="INSTALLDIR">
+      <Component Id="CLIExecutable" Guid="{AD7A6B52-D1C0-48F2-B195-F4268D93CBEE}">
+        <File Id="oneandoneEXE" Name='oneandone.exe' Source="../bin/oneandone.exe" KeyPath="yes" Vital="yes"/>
+        <Environment Id="UpdatePath" Name="PATH" Action="set" Permanent="no" System="yes" Part="last" Value="[INSTALLDIR]" />
+      </Component>
+      <Component Id="InstallRegistryEntries" Guid="{8EA5BF6F-9BB1-4013-9843-8DA4A78875A4}">
+        <RegistryKey Root="HKLM" Key="Software\1and1\CLI">
+          <RegistryValue Type="string" Name="InstallDir" Value="[INSTALLDIR]" KeyPath="yes" />
+        </RegistryKey>
+      </Component>
+    </DirectoryRef>
+
+    <Feature Id="ProductFeature" Display="expand" Title="1and1 CLI" Level="1" ConfigurableDirectory="INSTALLDIR">
+      <ComponentRef Id="CLIExecutable" />
+      <ComponentRef Id="InstallRegistryEntries" />
+    </Feature>
+
+    <UIRef Id="WixUI_InstallDir" />
+    <UIRef Id="WixUI_ErrorProgressText" />
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+
+    <WixVariable Id="WixUIBannerBmp" Value="build/windows/banner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="build/windows/background.bmp" />
+    <WixVariable Id="WixUILicenseRtf" Value="build/windows/LICENSE.rtf" />
+    
+    </Product>
+</Wix>
