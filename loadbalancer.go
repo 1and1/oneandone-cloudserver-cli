@@ -57,11 +57,11 @@ func init() {
 	}
 	hctFlag := cli.StringFlag{
 		Name:  "hctest",
-		Usage: "Health check test: NONE, TCP or HTTP. At the moment, HTTP is not allowed.",
+		Usage: "Health check test: NONE, TCP or ICMP.",
 	}
 	hciFlag := cli.StringFlag{
 		Name:  "hctime",
-		Usage: "Health check period in seconds: 50 - 300.",
+		Usage: "Health check period in seconds.",
 	}
 	persistenceFlag := cli.BoolFlag{
 		Name:  "persistence",
@@ -263,8 +263,8 @@ func parseLBMethod(ctx *cli.Context) string {
 
 func parseHCTest(ctx *cli.Context) string {
 	hcTest := strings.ToUpper(getRequiredOption(ctx, "hctest"))
-	if hcTest != "NONE" && hcTest != "TCP" {
-		exitOnError(fmt.Errorf("Invalid value for --hctest flag. Valid values are NONE and TCP."))
+	if hcTest != "NONE" && hcTest != "TCP" && hcTest != "ICMP" {
+		exitOnError(fmt.Errorf("Invalid value for --hctest flag. Valid values are NONE, TCP and ICMP."))
 	}
 	return hcTest
 }
