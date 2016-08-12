@@ -57,7 +57,7 @@ func init() {
 	}
 	datacenterIDFlag := cli.StringFlag{
 		Name:  "datacenterid",
-		Usage: "Datacenter ID.",
+		Usage: "Data center ID.",
 	}
 	hwFlags := []cli.Flag{cpuFlag, coresFlag, flavorFlag, hdSizeFlag, ramFlag}
 
@@ -71,7 +71,7 @@ func init() {
 			Usage: "Description of the server.",
 		},
 		passwordFlag,
-		cli.BoolFlag{
+		cli.BoolTFlag{
 			Name:  "poweron",
 			Usage: "Power on the server after creating.",
 		},
