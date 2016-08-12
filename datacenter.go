@@ -24,7 +24,7 @@ func init() {
 				},
 				{
 					Name:   "list",
-					Usage:  "Lists all available  data centers.",
+					Usage:  "Lists all available data centers.",
 					Flags:  queryFlags,
 					Action: listDatacenters,
 				},

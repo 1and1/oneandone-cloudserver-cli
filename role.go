@@ -746,7 +746,7 @@ func showRoleUser(ctx *cli.Context) {
 	userID := getRequiredOption(ctx, "userid")
 	role, err := api.GetRoleUser(id, userID)
 	exitOnError(err)
-	output(ctx, role, "OK", false, nil, nil)
+	output(ctx, role, "", true, nil, nil)
 }
 
 func showPerm(ctx *cli.Context) {
