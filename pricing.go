@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/1and1/oneandone-cloudserver-sdk-go"
 	"github.com/codegangsta/cli"
@@ -81,8 +82,8 @@ func imagePlan(ctx *cli.Context) {
 	data := make([][]string, 1)
 	data[0] = []string{
 		pricing.Plan.Image.Name,
-		pricing.Plan.Image.GrossPrice,
-		pricing.Plan.Image.NetPrice,
+		strconv.FormatFloat(pricing.Plan.Image.GrossPrice, 'f', -1, 64),
+		strconv.FormatFloat(pricing.Plan.Image.NetPrice, 'f', -1, 64),
 		pricing.Plan.Image.Unit,
 	}
 	displayPriceTable(ctx, pricing, data)
@@ -92,7 +93,12 @@ func publicIPPlan(ctx *cli.Context) {
 	pricing := getPricing()
 	data := make([][]string, len(pricing.Plan.PublicIPs))
 	for i, ip := range pricing.Plan.PublicIPs {
-		data[i] = []string{ip.Name, ip.GrossPrice, ip.NetPrice, ip.Unit}
+		data[i] = []string{
+			ip.Name,
+			strconv.FormatFloat(ip.GrossPrice, 'f', -1, 64),
+			strconv.FormatFloat(ip.NetPrice, 'f', -1, 64),
+			ip.Unit,
+		}
 	}
 	displayPriceTable(ctx, pricing, data)
 }
@@ -101,7 +107,12 @@ func fixedServerPlan(ctx *cli.Context) {
 	pricing := getPricing()
 	data := make([][]string, len(pricing.Plan.Servers.FixedServers))
 	for i, s := range pricing.Plan.Servers.FixedServers {
-		data[i] = []string{s.Name, s.GrossPrice, s.NetPrice, s.Unit}
+		data[i] = []string{
+			s.Name,
+			strconv.FormatFloat(s.GrossPrice, 'f', -1, 64),
+			strconv.FormatFloat(s.NetPrice, 'f', -1, 64),
+			s.Unit,
+		}
 	}
 	displayPriceTable(ctx, pricing, data)
 }
@@ -110,7 +121,12 @@ func flexServerPlan(ctx *cli.Context) {
 	pricing := getPricing()
 	data := make([][]string, len(pricing.Plan.Servers.FlexServers))
 	for i, s := range pricing.Plan.Servers.FlexServers {
-		data[i] = []string{s.Name, s.GrossPrice, s.NetPrice, s.Unit}
+		data[i] = []string{
+			s.Name,
+			strconv.FormatFloat(s.GrossPrice, 'f', -1, 64),
+			strconv.FormatFloat(s.NetPrice, 'f', -1, 64),
+			s.Unit,
+		}
 	}
 	displayPriceTable(ctx, pricing, data)
 }
@@ -120,8 +136,8 @@ func sharedStoragePlan(ctx *cli.Context) {
 	data := make([][]string, 1)
 	data[0] = []string{
 		pricing.Plan.SharedStorage.Name,
-		pricing.Plan.SharedStorage.GrossPrice,
-		pricing.Plan.SharedStorage.NetPrice,
+		strconv.FormatFloat(pricing.Plan.SharedStorage.GrossPrice, 'f', -1, 64),
+		strconv.FormatFloat(pricing.Plan.SharedStorage.NetPrice, 'f', -1, 64),
 		pricing.Plan.SharedStorage.Unit,
 	}
 	displayPriceTable(ctx, pricing, data)
@@ -131,7 +147,12 @@ func softwareLicensePlan(ctx *cli.Context) {
 	pricing := getPricing()
 	data := make([][]string, len(pricing.Plan.SoftwareLicenses))
 	for i, lic := range pricing.Plan.SoftwareLicenses {
-		data[i] = []string{lic.Name, lic.GrossPrice, lic.NetPrice, lic.Unit}
+		data[i] = []string{
+			lic.Name,
+			strconv.FormatFloat(lic.GrossPrice, 'f', -1, 64),
+			strconv.FormatFloat(lic.NetPrice, 'f', -1, 64),
+			lic.Unit,
+		}
 	}
 	displayPriceTable(ctx, pricing, data)
 }
