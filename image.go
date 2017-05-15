@@ -113,11 +113,15 @@ func listImages(ctx *cli.Context) {
 	exitOnError(err)
 	data := make([][]string, len(images))
 	for i, image := range images {
+		arch := ""
+		if image.Architecture != nil {
+			arch = strconv.Itoa(*image.Architecture)
+		}
 		data[i] = []string{
 			image.Id,
 			image.Name,
 			image.OsVersion,
-			strconv.Itoa(*image.Architecture),
+			arch,
 			getDatacenter(image.Datacenter),
 		}
 	}
