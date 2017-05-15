@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
 	"strconv"
 
 	"github.com/1and1/oneandone-cloudserver-sdk-go"
@@ -34,6 +36,10 @@ func init() {
 	passwordFlag := cli.StringFlag{
 		Name:  "password, p",
 		Usage: "Password of the server.",
+	}
+	sshKeyPathFlag := cli.StringFlag{
+		Name:  "sshkeypath",
+		Usage: "Path to SSH public key file.",
 	}
 	cpuFlag := cli.StringFlag{
 		Name:  "cpu",
@@ -71,6 +77,7 @@ func init() {
 			Usage: "Description of the server.",
 		},
 		passwordFlag,
+		sshKeyPathFlag,
 		cli.BoolTFlag{
 			Name:  "poweron",
 			Usage: "Power on the server after creating.",
@@ -489,11 +496,26 @@ func getHardwareConfig(ctx *cli.Context) oneandone.Hardware {
 }
 
 func createServer(ctx *cli.Context) {
+	sshKey := ""
+	sshKeyPath := ctx.String("sshkeypath")
+	if sshKeyPath != "" {
+		_, err := os.Stat(sshKeyPath)
+		if err != nil {
+			exitOnError(fmt.Errorf("The file specified by `--sshkeypath` does not exist."))
+		} else {
+			publicKey, err := ioutil.ReadFile(sshKeyPath)
+			if err != nil {
+				exitOnError(fmt.Errorf("Failed to read SSH key. Error: %s", err.Error()))
+			}
+			sshKey = string(publicKey)
+		}
+	}
 	req := oneandone.ServerRequest{
 		Name:               getRequiredOption(ctx, "name"),
 		Description:        ctx.String("desc"),
 		ApplianceId:        getRequiredOption(ctx, "osid"),
 		Password:           ctx.String("password"),
+		SSHKey:             sshKey,
 		PowerOn:            ctx.Bool("poweron"),
 		FirewallPolicyId:   ctx.String("firewallid"),
 		IpId:               ctx.String("ipid"),
