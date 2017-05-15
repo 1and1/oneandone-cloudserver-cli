@@ -495,6 +495,7 @@ oneandone server create \
    --name            [Name of the server] \
    --desc            [Description of the server] \
    --password        [Password of the server] \
+   --sshkeypath      [Path to SSH public key file] \
    --poweron         [Power on the server after creating] \
    --osid            [Server appliance ID] \
    --ipid            [ID of the IP] \
