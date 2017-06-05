@@ -62,9 +62,10 @@ func listLogs(ctx *cli.Context) {
 			log.Action,
 			log.StartDate,
 			strconv.Itoa(log.Duration),
+			log.Status.State,
 		}
 	}
-	header := []string{"ID", "Type", "Action", "Start Date", "Duration (S)"}
+	header := []string{"ID", "Type", "Action", "Start Date", "Duration (S)", "Status"}
 	output(ctx, logs, "", false, &header, &data)
 }
 
