@@ -239,6 +239,17 @@ func getIntOption(ctx *cli.Context, flag string, required bool) int {
 	return ctx.Int(flag)
 }
 
+func getIntOrNil(ctx *cli.Context, flag string, required bool) *int {
+	if required && !ctx.IsSet(flag) {
+		exitOnError(fmt.Errorf("--%s option is required", flag))
+	}
+	if ctx.IsSet(flag) {
+		value := ctx.Int(flag)
+		return &value
+	}
+	return nil
+}
+
 func getDateOption(ctx *cli.Context, flag string, required bool) time.Time {
 	dateStr := ctx.String(flag)
 	if required && (!ctx.IsSet(flag) || strings.TrimSpace(dateStr) == "") {

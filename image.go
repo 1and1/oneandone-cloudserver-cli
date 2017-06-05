@@ -26,7 +26,7 @@ func init() {
 					Flags: []cli.Flag{
 						cli.StringFlag{
 							Name:  "serverid",
-							Usage: "ID of the server to create the image for",
+							Usage: "ID of the server to create the image for.",
 						},
 						cli.StringFlag{
 							Name:  "name, n",
@@ -37,12 +37,32 @@ func init() {
 							Usage: "Description of the image.",
 						},
 						cli.StringFlag{
-							Name:  "frequency",
-							Usage: "Creation policy frequency: ONCE, DAILY or WEEKLY",
+							Name:  "frequency, f",
+							Usage: "Creation policy frequency: ONCE, DAILY or WEEKLY.",
 						},
 						cli.StringFlag{
 							Name:  "num",
-							Usage: "Maximum number of images, 1 - 50",
+							Usage: "Maximum number of images, 1 - 50.",
+						},
+						cli.StringFlag{
+							Name:  "datacenterid",
+							Usage: "ID of the data center where the image will be created.",
+						},
+						cli.StringFlag{
+							Name:  "source, s",
+							Usage: "Source of the new image: 'server' (default), 'image' or 'iso'.",
+						},
+						cli.StringFlag{
+							Name:  "url",
+							Usage: "URL where the image can be downloaded from. Required if the source is 'image' or 'iso'.",
+						},
+						cli.StringFlag{
+							Name:  "osid",
+							Usage: "ID of the Operative System you want to import.",
+						},
+						cli.StringFlag{
+							Name:  "type, t",
+							Usage: "Type of the ISO you want to import: 'os' or 'app'. Required if the source is 'iso'.",
 						},
 					},
 					Action: createImage,
@@ -58,6 +78,12 @@ func init() {
 					Usage:  "Lists all available images.",
 					Flags:  queryFlags,
 					Action: listImages,
+				},
+				{
+					Name:   "os",
+					Usage:  "Lists all available image OSes.",
+					Flags:  queryFlags,
+					Action: listImageOs,
 				},
 				{
 					Name:   "rm",
@@ -91,17 +117,27 @@ func init() {
 }
 
 func createImage(ctx *cli.Context) {
-	serverId := getRequiredOption(ctx, "serverid")
 	imgName := getRequiredOption(ctx, "name")
-	imgFreq := getRequiredOption(ctx, "frequency")
-	imgNo := getIntOptionInRange(ctx, "num", 1, 50)
+	serverId := ctx.String("serverid")
+	imgFreq := ctx.String("frequency")
+	imgNo := getIntOrNil(ctx, "num", false)
 	imgDesc := ctx.String("desc")
-	req := oneandone.ImageConfig{
-		ServerId:    serverId,
-		Name:        imgName,
-		NumImages:   imgNo,
-		Frequency:   imgFreq,
-		Description: imgDesc,
+	dcId := ctx.String("datacenterid")
+	source := ctx.String("source")
+	url := ctx.String("url")
+	osId := ctx.String("osid")
+	isoType := ctx.String("type")
+	req := oneandone.ImageRequest{
+		ServerId:     serverId,
+		DatacenterId: dcId,
+		Source:       source,
+		Url:          url,
+		OsId:         osId,
+		Type:         isoType,
+		Name:         imgName,
+		NumImages:    imgNo,
+		Frequency:    imgFreq,
+		Description:  imgDesc,
 	}
 	_, image, err := api.CreateImage(&req)
 	exitOnError(err)
@@ -113,6 +149,10 @@ func listImages(ctx *cli.Context) {
 	exitOnError(err)
 	data := make([][]string, len(images))
 	for i, image := range images {
+		osVersion := image.OsVersion
+		if osVersion == "" {
+			osVersion = image.Os
+		}
 		arch := ""
 		if image.Architecture != nil {
 			arch = strconv.Itoa(*image.Architecture)
@@ -120,13 +160,34 @@ func listImages(ctx *cli.Context) {
 		data[i] = []string{
 			image.Id,
 			image.Name,
-			image.OsVersion,
+			osVersion,
 			arch,
 			getDatacenter(image.Datacenter),
 		}
 	}
 	header := []string{"ID", "Name", "OS", "Architecture", "Data Center"}
 	output(ctx, images, "", false, &header, &data)
+}
+
+func listImageOs(ctx *cli.Context) {
+	imageOs, err := api.ListImageOs(getQueryParams(ctx))
+	exitOnError(err)
+	data := make([][]string, len(imageOs))
+	for i, os := range imageOs {
+		arch := ""
+		if os.Architecture != nil {
+			arch = strconv.Itoa(*os.Architecture)
+		}
+		data[i] = []string{
+			os.Id,
+			os.Os,
+			os.OsFamily,
+			os.OsVersion,
+			arch,
+		}
+	}
+	header := []string{"ID", "OS", "OS Family", "OS Version", "Architecture"}
+	output(ctx, imageOs, "", false, &header, &data)
 }
 
 func showImage(ctx *cli.Context) {

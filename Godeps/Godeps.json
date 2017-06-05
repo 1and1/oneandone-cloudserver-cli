@@ -5,8 +5,8 @@
 	"Deps": [
 		{
 			"ImportPath": "github.com/1and1/oneandone-cloudserver-sdk-go",
-			"Comment": "v1.0.2",
-			"Rev": "befc7f591dbb471ec8edb958775a527e430a672b"
+			"Comment": "v1.1.0",
+			"Rev": "7dcdac0451abeabddf5c363836b576f6c89c6dfd"
 		},
 		{
 			"ImportPath": "github.com/codegangsta/cli",

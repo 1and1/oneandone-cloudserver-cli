@@ -232,8 +232,8 @@ func parseLoadBalancerRules(ctx *cli.Context) []oneandone.LoadBalancerRule {
 		}
 
 		rule := oneandone.LoadBalancerRule{
-			PortBalancer: uint16(validateIntRange("portbalancer", lbPorts[i], 1, 65535)),
-			PortServer:   uint16(validateIntRange("portserver", serverPorts[i], 1, 65535)),
+			PortBalancer: uint16(validateIntRange("portbalancer", lbPorts[i], 0, 65535)),
+			PortServer:   uint16(validateIntRange("portserver", serverPorts[i], 0, 65535)),
 			Protocol:     protocols[i],
 			Source:       source,
 		}
@@ -300,7 +300,7 @@ func createLoadBalancer(ctx *cli.Context) {
 	req := oneandone.LoadBalancerRequest{
 		DatacenterId:          ctx.String("datacenterid"),
 		HealthCheckTest:       parseHCTest(ctx),
-		HealthCheckInterval:   oneandone.Int2Pointer(getIntOptionInRange(ctx, "hctime", 50, 300)),
+		HealthCheckInterval:   oneandone.Int2Pointer(getIntOptionInRange(ctx, "hctime", 5, 300)),
 		Method:                parseLBMethod(ctx),
 		Name:                  getRequiredOption(ctx, "name"),
 		Rules:                 parseLoadBalancerRules(ctx),
@@ -327,7 +327,7 @@ func updateLoadBalancer(ctx *cli.Context) {
 		hcTest = parseHCTest(ctx)
 	}
 	if ctx.IsSet("hctime") {
-		hcTime = oneandone.Int2Pointer(getIntOptionInRange(ctx, "hctime", 50, 300))
+		hcTime = oneandone.Int2Pointer(getIntOptionInRange(ctx, "hctime", 5, 300))
 	}
 	if ctx.IsSet("method") {
 		method = parseLBMethod(ctx)

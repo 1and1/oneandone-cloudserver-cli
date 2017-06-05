@@ -622,6 +622,10 @@ Set `--force` to true to force HARDWARE method of powering off.
 
 `oneandone image list`
 
+**List available image OSes:**
+
+`oneandone image os`
+
 **Retrieve a single image:**
 
 `oneandone image info --id [image ID]`
@@ -629,9 +633,18 @@ Set `--force` to true to force HARDWARE method of powering off.
 **Create an image:**
 
 ```
-oneandone image create --id [image ID] --name [image name] --desc [image description] \
-  --frequency  [ONCE|DAILY|WEEKLY] --num [number of images, 1 - 50]
+oneandone image create --serverid [server ID] --name [image name] --desc [image description] \
+  --frequency  [ONCE|DAILY|WEEKLY] --num [number of images, 1 - 50] --datacenterid [data center ID]
 ```
+`--datacenterid` and `--desc` are optional.
+
+**Import a private image:**
+
+```
+oneandone image create --name [image name] -s [image|iso] -t [os|app] --osid [image OS ID] \
+  --url [url to import the image from]
+```
+`--osid` is required if the image source is `image`, or the source is `iso` and the type is `os`.
 
 **Update an image:**
 
@@ -763,7 +776,7 @@ oneandone firewall ruleadd --id [firewall policy ID] \
 
 ```
 oneandone loadbalancer create --name [load balancer name] --desc [load balancer description] --method [ROUND_ROBIN|LEAST_CONNECTIONS (RR|LC)]\
-  --hctest [health check test, NONE|TCP|HTTP] --hctime [health check time (s), 50 - 300] --hcpath [health check URL] \
+  --hctest [health check test, NONE|TCP|ICMP|HTTP] --hctime [health check time (s), 5 - 300] --hcpath [health check URL] \
   --hcregex [health check regex] --persistence=[true|false] --persint [persistence time (s), 30 - 1200] \
   {--portbalancer [load balancer port] --portserver [server port] --protocol [TCP|UDP] --source [source IP]} \
   --datacenterid [data center ID]
@@ -773,7 +786,7 @@ oneandone loadbalancer create --name [load balancer name] --desc [load balancer 
 
 ```
 oneandone loadbalancer update --id [load balancer ID] --name [load balancer name] --desc [load balancer description] --method [ROUND_ROBIN|LEAST_CONNECTIONS (RR|LC)]\
-  --hctest [health check test, NONE|TCP|HTTP] --hctime [health check time (s), 50 - 300] --hcpath [health check URL] \
+  --hctest [health check test, NONE|TCP|ICMP|HTTP] --hctime [health check time (s), 5 - 300] --hcpath [health check URL] \
   --hcregex [health check regex] --persistence=[true|false] --persint [persistence time (s), 30 - 1200]
 ```
 
