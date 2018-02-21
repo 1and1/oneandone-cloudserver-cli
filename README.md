@@ -1496,3 +1496,25 @@ oneandone blockstorage create --name [block storage name] --size [block storage 
 **Detach a block storage from a server:**
 
 `oneandone blockstorage detach --id [block storage ID] --serverid [server ID]`
+
+## SSH Key
+
+**List all SSH Keys:**
+
+`oneandone sshkey list`
+
+**Retrieve information about an SSH Key:**
+
+`oneandone sshkey info --id [SSH Key ID]`
+
+**Create an SSH Key:**
+
+`oneandone sshkey create --name [SSH Key name] --desc [SSH Key description] --publickey [SSH Key public key]`
+
+**Modify an SSH Key:**
+
+`oneandone sshkey modify --id [SSH Key ID] --name [SSH Key name] --desc [SSH Key description]`
+
+**Delete an SSH Key:**
+
+`oneandone sshkey rm --id [SSH Key ID]`
