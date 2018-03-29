@@ -28,6 +28,8 @@ var cliOps = []string{
 	"usage",
 	"user",
 	"vpn",
+	"blockstorage",
+	"sshkey",
 }
 
 const (
@@ -97,6 +99,8 @@ func TestRequiredArgs(t *testing.T) {
 		{"id", "sharedstorage", "info"},
 		{"id", "user", "info"},
 		{"id", "vpn", "info"},
+		{"id", "blockstorage", "info"},
+		{"id", "sshkey", "info"},
 		{"period", "usage", "images"},
 		{"period", "usage", "loadbalancers"},
 		{"period", "usage", "ips"},
@@ -114,6 +118,8 @@ func TestRequiredArgs(t *testing.T) {
 		{"id", "sharedstorage", "rm"},
 		{"id", "user", "rm"},
 		{"id", "vpn", "rm"},
+		{"id", "blockstorage", "rm"},
+		{"id", "sshkey", "rm"},
 		{"id", "role", "clone"},
 		{"id", "server", "clone"},
 		{"id", "server", "update"},

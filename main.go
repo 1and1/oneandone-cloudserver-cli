@@ -123,6 +123,8 @@ func main() {
 	app.Commands = append(app.Commands, usageOps...)
 	app.Commands = append(app.Commands, userOps...)
 	app.Commands = append(app.Commands, vpnOps...)
+	app.Commands = append(app.Commands, blockStorageOps...)
+	app.Commands = append(app.Commands, sshKeyOps...)
 
 	app.Run(os.Args)
 }
@@ -381,4 +383,19 @@ func formatDateTime(layout string, value string) string {
 		return value
 	}
 	return dt.Format(layout)
+}
+
+func getBsServer(server *oneandone.BlockStorageServer) string {
+	if server != nil {
+		return server.ServerId
+	}
+	return ""
+}
+
+func getSSHServers(servers []oneandone.SSHServer) string {
+	result := ""
+	for i, server := range servers {
+		result += string(i) + " - Id: " + server.Id + ", Name: " + server.Name + "\n"
+	}
+	return result
 }

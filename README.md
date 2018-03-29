@@ -46,6 +46,8 @@ For more information on the 1&amp;1 Cloud Server CLI see the [1&1 Community Port
   - [Ping Authentication](#ping-authentication)
   - [Pricing](#pricing)
   - [Data Center](#data-center)
+  - [Block Storage](#block-storage)
+  - [SSH Key](#ssh-key)
 
 ## Concepts
 
@@ -134,6 +136,7 @@ Operations:
    usage                Usage operations.
    user                 User operations.
    vpn                  VPN operations.
+   blockstorage         Block storage operations.
    help, h              Shows a list of commands or help for one command
 
 Run 'oneandone OPERATION --help' for more information on an operation's commands.
@@ -685,7 +688,7 @@ oneandone sharedstorage update --id [shared storage ID] --name [new name] \
 
 `oneandone sharedstorage rm --id [shared storage ID]`
 
-**List a shared storage servers:**
+**List shared storage servers:**
 
 `oneandone sharedstorage serverlist --id [shared storage ID]`
 
@@ -1460,3 +1463,59 @@ Only one command at the time is allowed, `images`, `loadbalancers`, `ips`, `serv
 **Retrieve a specific data center:**
 
 `oneandone datacenter info --id [data center ID]`
+
+## Block Storage
+
+**List block storages:**
+
+`oneandone blockstorage list`
+
+**Retrieve a block storage:**
+
+`oneandone blockstorage info --id [block storage ID]`
+
+**Create a block storage:**
+
+```
+oneandone blockstorage create --name [block storage name] --size [block storage size] \
+  --desc [block storage description] --datacenterid [data center ID] \
+  --serverid [server ID] 
+```
+
+**Remove a block storage:**
+
+`oneandone blockstorage rm --id [block storage ID]`
+
+**Attach a block storage to a server:**
+
+`oneandone blockstorage attach --id [block storage ID] --serverid [server ID]`
+
+**Retrieve a block storage server:**
+
+`oneandone blockstorage serverinfo --id [block storage ID]`
+
+**Detach a block storage from a server:**
+
+`oneandone blockstorage detach --id [block storage ID] --serverid [server ID]`
+
+## SSH Key
+
+**List all SSH Keys:**
+
+`oneandone sshkey list`
+
+**Retrieve information about an SSH Key:**
+
+`oneandone sshkey info --id [SSH Key ID]`
+
+**Create an SSH Key:**
+
+`oneandone sshkey create --name [SSH Key name] --desc [SSH Key description] --publickey [SSH Key public key]`
+
+**Modify an SSH Key:**
+
+`oneandone sshkey modify --id [SSH Key ID] --name [SSH Key name] --desc [SSH Key description]`
+
+**Delete an SSH Key:**
+
+`oneandone sshkey rm --id [SSH Key ID]`
