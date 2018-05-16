@@ -198,7 +198,7 @@ func TestRequiredStringSlice(t *testing.T) {
 }
 
 func TestRequiredIntRange(t *testing.T) {
-	out, err := runCommand(appPath, "image", "create", "--serverid=1a", "--name=dummy", "--frequency=once")
+	out, err := runCommand(appPath, "image", "create", "--num=60", "--serverid=1a", "--name=dummy", "--frequency=once")
 	assertEqual(t, err, fmt.Sprintf(requiredIntRange, "num", 1, 50), out)
 
 	out, err = runCommand(appPath, "sharedstorage", "create", "--name=dummy")

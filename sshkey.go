@@ -3,8 +3,8 @@ package main
 import (
 	"time"
 
-	"github.com/codegangsta/cli"
 	"github.com/1and1/oneandone-cloudserver-sdk-go"
+	"github.com/codegangsta/cli"
 )
 
 var sshKeyOps []cli.Command
@@ -33,7 +33,7 @@ func init() {
 							Usage: "Description of the SSH Key.",
 						},
 						cli.StringFlag{
-							Name:  "publickey, p",
+							Name: "publickey, p",
 							Usage: "Public key to import. If not given, new SSH key pair " +
 								"will be created and the private key is returned in the response.",
 						},
@@ -83,9 +83,9 @@ func createSSHKey(ctx *cli.Context) {
 	sshKeyName := getRequiredOption(ctx, "name")
 
 	req := oneandone.SSHKeyRequest{
-		Name:			sshKeyName,
-		Description:	ctx.String("desc"),
-		PublicKey:		ctx.String("publickey"),
+		Name:        sshKeyName,
+		Description: ctx.String("desc"),
+		PublicKey:   ctx.String("publickey"),
 	}
 	_, sshKey, err := api.CreateSSHKey(&req)
 	exitOnError(err)

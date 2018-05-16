@@ -1,0 +1,31 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "R7Ogx39hnqLTZ9IHPbNJy0SJifw=",
+			"path": "github.com/1and1/oneandone-cloudserver-sdk-go",
+			"revision": "d32eb53f7e4af6157823934b18d69b42371efc43",
+			"revisionTime": "2018-05-15T10:24:17Z"
+		},
+		{
+			"checksumSHA1": "i27YHcyHY4stkXm12/ztso3wHUo=",
+			"path": "github.com/codegangsta/cli",
+			"revision": "71f57d300dd6a780ac1856c005c4b518cfd498ec",
+			"revisionTime": "2016-04-04T01:54:34Z"
+		},
+		{
+			"checksumSHA1": "cJE7dphDlam/i7PhnsyosNWtbd4=",
+			"path": "github.com/mattn/go-runewidth",
+			"revision": "97311d9f7767e3d6f422ea06661bc2c7a19e8a5d",
+			"revisionTime": "2017-05-10T07:48:58Z"
+		},
+		{
+			"checksumSHA1": "txsZLJ7XQsUIoAze9dD+XHYJguk=",
+			"path": "github.com/olekukonko/tablewriter",
+			"revision": "b8a9be070da40449e501c3c4730a889e42d87a9e",
+			"revisionTime": "2018-01-30T16:27:43Z"
+		}
+	],
+	"rootPath": "github.com/StackPointCloud/oneandone-cloudserver-cli"
+}

@@ -79,15 +79,15 @@ func init() {
 					Action: attachBsDrive,
 				},
 				{
-					Name:  "serverinfo",
-					Usage: "Shows information about block storage server.",
-					Flags: []cli.Flag{bsDriveIdFlag},
+					Name:   "serverinfo",
+					Usage:  "Shows information about block storage server.",
+					Flags:  []cli.Flag{bsDriveIdFlag},
 					Action: showBsDriveServer,
 				},
 				{
-					Name:  "detach",
-					Usage: "Detaches a block storage from a server.",
-					Flags: []cli.Flag{bsDriveIdFlag},
+					Name:   "detach",
+					Usage:  "Detaches a block storage from a server.",
+					Flags:  []cli.Flag{bsDriveIdFlag},
 					Action: detachBsDrive,
 				},
 			},
@@ -105,7 +105,7 @@ func createBsDrive(ctx *cli.Context) {
 		Name:         name,
 		Description:  ctx.String("desc"),
 		Size:         &size,
-		ServerId:	  ctx.String("serverid"),
+		ServerId:     ctx.String("serverid"),
 		DatacenterId: ctx.String("datacenterid"),
 	}
 	_, storage, err := api.CreateBlockStorage(&req)
@@ -150,7 +150,7 @@ func deleteBsDrive(ctx *cli.Context) {
 }
 
 func attachBsDrive(ctx *cli.Context) {
-	driveId  := getRequiredOption(ctx, "id")
+	driveId := getRequiredOption(ctx, "id")
 	serverId := getRequiredOption(ctx, "serverid")
 
 	storage, err := api.AddBlockStorageServer(driveId, serverId)

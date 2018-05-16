@@ -134,12 +134,6 @@ func init() {
 					Action: deleteFirewall,
 				},
 				{
-					Name:   "unassign",
-					Usage:  "Unassigns servers/IPs to firewall policy.",
-					Flags:  []cli.Flag{fIdFlag, fIpIdFlag},
-					Action: removeFirewallServer,
-				},
-				{
 					Name:   "update",
 					Usage:  "Updates name and description of firewall policy.",
 					Flags:  []cli.Flag{fIdFlag, fDescFlag, fNameFlag},
@@ -278,14 +272,6 @@ func showFirewallServer(ctx *cli.Context) {
 	server, err := api.GetFirewallPolicyServerIp(fwId, ipId)
 	exitOnError(err)
 	output(ctx, server, "", true, nil, nil)
-}
-
-func removeFirewallServer(ctx *cli.Context) {
-	fwId := getRequiredOption(ctx, "id")
-	ipId := getRequiredOption(ctx, "ipid")
-	firewall, err := api.DeleteFirewallPolicyServerIp(fwId, ipId)
-	exitOnError(err)
-	output(ctx, firewall, okWaitMessage, false, nil, nil)
 }
 
 func listFirewallRules(ctx *cli.Context) {

@@ -150,27 +150,10 @@ func modifyVPN(ctx *cli.Context) {
 
 func downloadVPNConfig(ctx *cli.Context) {
 	id := getRequiredOption(ctx, "id")
-	content, err := api.GetVPNConfigFile(id)
-	exitOnError(err)
-	var data []byte
-	data, err = base64.StdEncoding.DecodeString(content)
-	exitOnError(err)
 
 	var fileName, directory string
-	if ctx.IsSet("name") {
-		fileName = ctx.String("name")
-		if !strings.HasSuffix(fileName, ".zip") {
-			fileName += ".zip"
-		}
-	} else {
-		vpn, _ := api.GetVPN(id)
-		// Match default name offered in CP, Cloud Panel ID + .zip
-		if vpn != nil && vpn.CloudPanelId != "" {
-			fileName = vpn.CloudPanelId + ".zip"
-		} else {
-			fileName = "vpn_" + fmt.Sprintf("%x", md5.Sum(data)) + ".zip"
-		}
-	}
+	var err error
+
 	if ctx.IsSet("dir") {
 		directory = ctx.String("dir")
 	} else {
@@ -193,6 +176,21 @@ func downloadVPNConfig(ctx *cli.Context) {
 		} else {
 			exitOnError(err)
 		}
+	}
+
+	content, err := api.GetVPNConfigFile(id, directory)
+	exitOnError(err)
+	var data []byte
+	data, err = base64.StdEncoding.DecodeString(content)
+	exitOnError(err)
+
+	if ctx.IsSet("name") {
+		fileName = ctx.String("name")
+		if !strings.HasSuffix(fileName, ".zip") {
+			fileName += ".zip"
+		}
+	} else {
+		fileName = "vpn_" + fmt.Sprintf("%x", md5.Sum(data)) + ".zip"
 	}
 
 	fpath := fp.Join(directory, fileName)
