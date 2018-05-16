@@ -569,10 +569,6 @@ oneandone server imgupdate --id [server ID] --imgid [image ID] \
 
 `oneandone server fwadd --id [server ID] --ipid [IP ID] --firewallid [firewall policy ID]`
 
-**Remove a firewall policy from a server's IP:**
-
-`oneandone server fwrm --id [server ID] --ipid [IP ID]`
-
 **Assign a new load balancer to a server's IP:**
 
 `oneandone server lbadd --id [server ID] --ipid [IP ID] --loadbalancerid [load balancer ID]`
@@ -747,10 +743,6 @@ oneandone firewall create --name [firewall name] --desc [firewall description] \
 **Add servers/IPs to a firewall policy:**
 
 `oneandone firewall assign --id [firewall policy ID] {--ipid [IP ID] --ipid [IP ID]}`
-
-**Remove a server/IP from a firewall policy:**
-
-`oneandone firewall unassign --id [firewall policy ID] --ipid [IP ID]`
 
 **List rules of a firewall policy:**
 
