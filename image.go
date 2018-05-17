@@ -121,7 +121,7 @@ func createImage(ctx *cli.Context) {
 	serverId := ctx.String("serverid")
 	imgFreq := ctx.String("frequency")
 	imgNo := getIntOrNil(ctx, "num", false)
-	if (imgNo != nil) {
+	if imgNo != nil {
 		*imgNo = getIntOptionInRange(ctx, "num", 1, 50)
 	}
 	imgDesc := ctx.String("desc")
