@@ -121,6 +121,9 @@ func createImage(ctx *cli.Context) {
 	serverId := ctx.String("serverid")
 	imgFreq := ctx.String("frequency")
 	imgNo := getIntOrNil(ctx, "num", false)
+	if imgNo != nil {
+		*imgNo = getIntOptionInRange(ctx, "num", 1, 50)
+	}
 	imgDesc := ctx.String("desc")
 	dcId := ctx.String("datacenterid")
 	source := ctx.String("source")
@@ -210,7 +213,12 @@ func updateImage(ctx *cli.Context) {
 	if ctx.Bool("nocp") {
 		freq = "ONCE"
 	}
-	image, err := api.UpdateImage(id, ctx.String("name"), ctx.String("desc"), freq)
+	req := oneandone.UpdateImageRequest{
+		Name:        ctx.String("name"),
+		Description: ctx.String("desc"),
+		Frequency:   freq,
+	}
+	image, err := api.UpdateImage(id, &req)
 	exitOnError(err)
 	output(ctx, image, okWaitMessage, false, nil, nil)
 }
