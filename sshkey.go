@@ -25,7 +25,7 @@ func init() {
 					Usage: "Creates a new SSH Key.",
 					Flags: []cli.Flag{
 						cli.StringFlag{
-							Name:  "name",
+							Name:  "name, n",
 							Usage: "Name of the SSH Key.",
 						},
 						cli.StringFlag{
@@ -104,11 +104,10 @@ func listSSHKeys(ctx *cli.Context) {
 			sshKey.State,
 			getSSHServers(*sshKey.Servers),
 			sshKey.Md5,
-			sshKey.PublicKey,
 			formatDateTime(time.RFC3339, sshKey.CreationDate),
 		}
 	}
-	header := []string{"ID", "Name", "Description", "State", "Servers", "Md5", "PublicKey", "Creation Date"}
+	header := []string{"ID", "Name", "Description", "State", "Servers", "Md5", "Creation Date"}
 	output(ctx, sshKeys, "", false, &header, &data)
 }
 
