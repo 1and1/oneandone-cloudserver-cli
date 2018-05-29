@@ -250,12 +250,6 @@ func init() {
 					Action: showServerFirewall,
 				},
 				{
-					Name:   "fwrm",
-					Usage:  "Removes firewall policy from server's IP.",
-					Flags:  []cli.Flag{serverIdFlag, ipIdFlag},
-					Action: deleteServerFirewall,
-				},
-				{
 					Name:  "hddadd",
 					Usage: "Adds one or more hard disks to server.",
 					Flags: []cli.Flag{
@@ -795,14 +789,6 @@ func addServerFirewall(ctx *cli.Context) {
 	ipId := getRequiredOption(ctx, "ipid")
 	firewallId := getRequiredOption(ctx, "firewallid")
 	server, err := api.AssignServerIpFirewallPolicy(serverId, ipId, firewallId)
-	exitOnError(err)
-	output(ctx, server, okWaitMessage, false, nil, nil)
-}
-
-func deleteServerFirewall(ctx *cli.Context) {
-	serverId := getRequiredOption(ctx, "id")
-	ipId := getRequiredOption(ctx, "ipid")
-	server, err := api.UnassignServerIpFirewallPolicy(serverId, ipId)
 	exitOnError(err)
 	output(ctx, server, okWaitMessage, false, nil, nil)
 }

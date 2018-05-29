@@ -5,9 +5,6 @@ set -e
 OS="darwin linux windows"
 ARCH="amd64"
 
-echo "Getting package dependencies..."
-go get .
-
 # clean up before building
 rm -f bin/oneandone*
 
