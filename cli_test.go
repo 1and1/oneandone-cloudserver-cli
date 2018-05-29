@@ -124,6 +124,7 @@ func TestRequiredArgs(t *testing.T) {
 		{"id", "server", "clone"},
 		{"id", "server", "update"},
 		{"id", "vpn", "configfile"},
+		{"id", "blockstorage", "update"},
 		{"name", "role", "clone", "--id=dummy"},
 		{"name", "server", "clone", "--id=dummy"},
 		{"name", "server", "create"},
