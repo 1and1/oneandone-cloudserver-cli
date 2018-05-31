@@ -90,6 +90,22 @@ func init() {
 					Flags:  []cli.Flag{bsDriveIdFlag},
 					Action: detachBsDrive,
 				},
+				{
+					Name:  "update",
+					Usage: "Updates block storage.",
+					Flags: []cli.Flag{
+						bsDriveIdFlag,
+						cli.StringFlag{
+							Name:  "name, n",
+							Usage: "New name of the block storage.",
+						},
+						cli.StringFlag{
+							Name:  "desc, d",
+							Usage: "New description of the block storage.",
+						},
+					},
+					Action: updateBsDrive,
+				},
 			},
 		},
 	}
@@ -147,6 +163,17 @@ func deleteBsDrive(ctx *cli.Context) {
 	storage, err := api.DeleteBlockStorage(driveId)
 	exitOnError(err)
 	output(ctx, storage, okWaitMessage, false, nil, nil)
+}
+
+func updateBsDrive(ctx *cli.Context) {
+	driveId := getRequiredOption(ctx, "id")
+	req := oneandone.UpdateBlockStorageRequest{
+		Name:        ctx.String("name"),
+		Description: ctx.String("desc"),
+	}
+	blkStorage, err := api.UpdateBlockStorage(driveId, &req)
+	exitOnError(err)
+	output(ctx, blkStorage, okWaitMessage, false, nil, nil)
 }
 
 func attachBsDrive(ctx *cli.Context) {

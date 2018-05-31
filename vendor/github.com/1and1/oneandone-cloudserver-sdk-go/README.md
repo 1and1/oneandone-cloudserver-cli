@@ -1656,6 +1656,19 @@ blcs_id, blcs, err := api.CreateBlockStorage(&request)
 `Description` and `ServerId`are optional parameters.
 
 
+**Update a block storage:**
+
+```
+request := oneandone.UpdateBlockStorageRequest {
+    Name: new_name, 
+    Description: new_desc,
+  }
+  
+blcs, err := api.UpdateBlockStorage(blcs_id, &request)
+```
+All request's parameters are optional.
+
+
 **Remove a block storage storage:**
 
 `blcs, err := api.DeleteBlockStorage(blcs_id)`

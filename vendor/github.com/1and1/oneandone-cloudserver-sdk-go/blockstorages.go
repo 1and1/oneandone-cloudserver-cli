@@ -31,6 +31,11 @@ type BlockStorageServer struct {
 	Name     string `json:"name,omitempty"`
 }
 
+type UpdateBlockStorageRequest struct {
+	Name        string `json:"name,omitempty"`
+	Description string `json:"description,omitempty"`
+}
+
 func (api *API) ListBlockStorages(args ...interface{}) ([]BlockStorage, error) {
 	url, err := processQueryParams(createUrl(api, blockStoragePathSegment), args...)
 	if err != nil {
@@ -124,6 +129,17 @@ func (api *API) DeleteBlockStorage(id string) (*BlockStorage, error) {
 	result := new(BlockStorage)
 	url := createUrl(api, blockStoragePathSegment, id)
 	err := api.Client.Delete(url, nil, &result, http.StatusOK)
+	if err != nil {
+		return nil, err
+	}
+	result.api = api
+	return result, nil
+}
+
+func (api *API) UpdateBlockStorage(id string, request *UpdateBlockStorageRequest) (*BlockStorage, error) {
+	result := new(BlockStorage)
+	url := createUrl(api, blockStoragePathSegment, id)
+	err := api.Client.Put(url, &request, &result, http.StatusOK)
 	if err != nil {
 		return nil, err
 	}

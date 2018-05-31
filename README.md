@@ -1474,6 +1474,10 @@ oneandone blockstorage create --name [block storage name] --size [block storage 
   --serverid [server ID] 
 ```
 
+**Update a block storage:**
+
+`oneandone blockstorage update --id [block storage ID] --name [updated bs name] --desc [updated bs description]`
+
 **Remove a block storage:**
 
 `oneandone blockstorage rm --id [block storage ID]`

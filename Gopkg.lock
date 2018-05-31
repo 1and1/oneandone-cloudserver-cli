@@ -4,8 +4,8 @@
 [[projects]]
   name = "github.com/1and1/oneandone-cloudserver-sdk-go"
   packages = ["."]
-  revision = "d32eb53f7e4af6157823934b18d69b42371efc43"
-  version = "v1.3.4"
+  revision = "794121a0c7bed2f3206c33b91113e900a070c55e"
+  version = "v1.3.5"
 
 [[projects]]
   name = "github.com/codegangsta/cli"
@@ -28,6 +28,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "725d9dee7ec58753250fcf514c7bdff3111312712bcf9c7a8eb10fd517fbecdc"
+  inputs-digest = "e6ab54b479fb2a5bd78da5e4dc558e7feaa0de94dc58f6c39b2a3c426bf0102d"
   solver-name = "gps-cdcl"
   solver-version = 1
