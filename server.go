@@ -54,7 +54,7 @@ func init() {
 		Usage: "Fixed size ID desired for the server.",
 	}
 	bmFlag := cli.StringFlag{
-		Name:  "baremetalid, s",
+		Name:  "modelid, s",
 		Usage: "Baremetal model ID desired for the server.",
 	}
 	hdSizeFlag := cli.StringFlag{
@@ -115,10 +115,10 @@ func init() {
 					Action: createServer,
 				},
 				{
-					Name:   "create",
+					Name:   "createbaremetal",
 					Usage:  "Creates new baremetal server.",
 					Flags:  append(bmHwFlags, tcsFlags...),
-					Action: createBaremetalServer,
+					Action: createbaremetalServer,
 				},
 				{
 					Name:  "clone",
@@ -551,9 +551,10 @@ func createServer(ctx *cli.Context) {
 	output(ctx, server, okWaitMessage, false, nil, nil)
 }
 
-func createBaremetalServer(ctx *cli.Context) {
+func createbaremetalServer(ctx *cli.Context) {
 	sshKey := ""
 	sshKeyPath := ctx.String("sshkeypath")
+	modelId := ctx.String("modelid")
 	if sshKeyPath != "" {
 		_, err := os.Stat(sshKeyPath)
 		if err != nil {
@@ -566,6 +567,10 @@ func createBaremetalServer(ctx *cli.Context) {
 			sshKey = string(publicKey)
 		}
 	}
+	hardware := oneandone.Hardware{
+		BaremetalModelId: modelId,
+	}
+
 	req := oneandone.ServerRequest{
 		Name:               getRequiredOption(ctx, "name"),
 		Description:        ctx.String("desc"),
@@ -578,7 +583,7 @@ func createBaremetalServer(ctx *cli.Context) {
 		LoadBalancerId:     ctx.String("loadbalancerid"),
 		MonitoringPolicyId: ctx.String("monitorpolicyid"),
 		DatacenterId:       ctx.String("datacenterid"),
-		Hardware:           getHardwareConfig(ctx),
+		Hardware:           hardware,
 		ServerType:         "baremetal",
 	}
 	_, server, err := api.CreateServer(&req)

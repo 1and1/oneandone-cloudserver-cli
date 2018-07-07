@@ -280,7 +280,7 @@ oneandone baremetal server models
 The next command illustrates how to create and power on a baremetal server of the "BMC_L_HDD" size .
 
 ```
-oneandone server create --name "CLI Demo baremetal Server" --baremetalid EB231935B1CFAC3D98D6FF4FBE74F6F6 \
+oneandone server create --name "CLI Demo baremetal Server" --modelid EB231935B1CFAC3D98D6FF4FBE74F6F6 \
   --poweron=true --password MyStrongPass123 --osid 33352CCE1E710AF200CD1234BFD18862
 ```
 The required options are `--name`, `--fixsizeid` and `--osid`. 
@@ -546,6 +546,26 @@ oneandone server create \
    --loadbalancerid  [ID of the load balancer] \
    --monitorpolicyid [Monitoring policy ID to use with the server]
 ```
+
+**Create a server:**
+
+```
+oneandone createbaremetalServer create \
+   --datacenterid    [Data center ID] \
+   --modelid       [Fixed-instance size ID desired for the server] \
+   --name            [Name of the server] \
+   --desc            [Description of the server] \
+   --password        [Password of the server] \
+   --sshkeypath      [Path to SSH public key file] \
+   --poweron         [Power on the server after creating] \
+   --osid            [Server appliance ID] \
+   --ipid            [ID of the IP] \
+   --regionid        [Datacenter region ID] \
+   --firewallid      [ID of the firewall policy] \
+   --loadbalancerid  [ID of the load balancer] \
+   --monitorpolicyid [Monitoring policy ID to use with the server]
+```
+
 
 **Update a server:**
 
