@@ -547,7 +547,7 @@ oneandone server create \
    --monitorpolicyid [Monitoring policy ID to use with the server]
 ```
 
-**Create a server:**
+**Create a baremetal server:**
 
 ```
 oneandone createbaremetalServer create \
