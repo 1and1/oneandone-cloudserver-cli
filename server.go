@@ -53,6 +53,10 @@ func init() {
 		Name:  "fixsizeid, s",
 		Usage: "Fixed size ID desired for the server.",
 	}
+	bmFlag := cli.StringFlag{
+		Name:  "baremetalid, s",
+		Usage: "Baremetal model ID desired for the server.",
+	}
 	hdSizeFlag := cli.StringFlag{
 		Name:  "hdsize",
 		Usage: "Size of the hard disk in GB.",
@@ -66,6 +70,8 @@ func init() {
 		Usage: "Data center ID.",
 	}
 	hwFlags := []cli.Flag{cpuFlag, coresFlag, flavorFlag, hdSizeFlag, ramFlag}
+
+	bmHwFlags := []cli.Flag{bmFlag}
 
 	tcsFlags := []cli.Flag{
 		cli.StringFlag{
@@ -109,6 +115,12 @@ func init() {
 					Action: createServer,
 				},
 				{
+					Name:   "create",
+					Usage:  "Creates new baremetal server.",
+					Flags:  append(bmHwFlags, tcsFlags...),
+					Action: createBaremetalServer,
+				},
+				{
 					Name:  "clone",
 					Usage: "Clones server.",
 					Flags: []cli.Flag{
@@ -148,6 +160,22 @@ func init() {
 					Name:   "fixedsizes",
 					Usage:  "Lists available fixed-size flavors.",
 					Action: listServerFlavors,
+				},
+				{
+					Name:   "baremetal models",
+					Usage:  "Lists available baremetal models.",
+					Action: listBaremetalModels,
+				},
+				{
+					Name:  "baremetalmodel",
+					Usage: "Shows information about baremetal model.",
+					Flags: []cli.Flag{
+						cli.StringFlag{
+							Name:  "id, i",
+							Usage: "ID of the baremetal model.",
+						},
+					},
+					Action: baremetalModel,
 				},
 				{
 					Name:   "start",
@@ -523,6 +551,41 @@ func createServer(ctx *cli.Context) {
 	output(ctx, server, okWaitMessage, false, nil, nil)
 }
 
+func createBaremetalServer(ctx *cli.Context) {
+	sshKey := ""
+	sshKeyPath := ctx.String("sshkeypath")
+	if sshKeyPath != "" {
+		_, err := os.Stat(sshKeyPath)
+		if err != nil {
+			exitOnError(fmt.Errorf("The file specified by `--sshkeypath` does not exist."))
+		} else {
+			publicKey, err := ioutil.ReadFile(sshKeyPath)
+			if err != nil {
+				exitOnError(fmt.Errorf("Failed to read SSH key. Error: %s", err.Error()))
+			}
+			sshKey = string(publicKey)
+		}
+	}
+	req := oneandone.ServerRequest{
+		Name:               getRequiredOption(ctx, "name"),
+		Description:        ctx.String("desc"),
+		ApplianceId:        getRequiredOption(ctx, "osid"),
+		Password:           ctx.String("password"),
+		SSHKey:             sshKey,
+		PowerOn:            ctx.Bool("poweron"),
+		FirewallPolicyId:   ctx.String("firewallid"),
+		IpId:               ctx.String("ipid"),
+		LoadBalancerId:     ctx.String("loadbalancerid"),
+		MonitoringPolicyId: ctx.String("monitorpolicyid"),
+		DatacenterId:       ctx.String("datacenterid"),
+		Hardware:           getHardwareConfig(ctx),
+		ServerType:         "baremetal",
+	}
+	_, server, err := api.CreateServer(&req)
+	exitOnError(err)
+	output(ctx, server, okWaitMessage, false, nil, nil)
+}
+
 func cloneServer(ctx *cli.Context) {
 	id := getRequiredOption(ctx, "id")
 	name := getRequiredOption(ctx, "name")
@@ -583,6 +646,30 @@ func flavorInfo(ctx *cli.Context) {
 	flavor, err := api.GetFixedInstanceSize(id)
 	exitOnError(err)
 	output(ctx, flavor, "", true, nil, nil)
+}
+
+func listBaremetalModels(ctx *cli.Context) {
+	flavors, err := api.ListBaremetalModels()
+	exitOnError(err)
+	data := make([][]string, len(flavors))
+	for i, f := range flavors {
+		data[i] = []string{
+			f.Id, f.Name,
+			strconv.FormatFloat(float64(f.Hardware.Ram), 'f', -1, 32),
+			strconv.Itoa(f.Hardware.Cores),
+			strconv.Itoa(f.Hardware.CoresPerProcessor),
+			strconv.Itoa(f.Hardware.Hdds.Size),
+		}
+	}
+	header := []string{"ID", "Name", "RAM (GB)", "Processor No.", "Cores per Processor", "Disk Size (GB)"}
+	output(ctx, flavors, "", false, &header, &data)
+}
+
+func baremetalModel(ctx *cli.Context) {
+	id := getRequiredOption(ctx, "id")
+	model, err := api.GetBaremetalModel(id)
+	exitOnError(err)
+	output(ctx, model, "", true, nil, nil)
 }
 
 func deleteServer(ctx *cli.Context) {
