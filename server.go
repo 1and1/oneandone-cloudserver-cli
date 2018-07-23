@@ -162,7 +162,7 @@ func init() {
 					Action: listServerFlavors,
 				},
 				{
-					Name:   "baremetal models",
+					Name:   "baremetalmodels",
 					Usage:  "Lists available baremetal models.",
 					Action: listBaremetalModels,
 				},
@@ -663,7 +663,7 @@ func listBaremetalModels(ctx *cli.Context) {
 			strconv.FormatFloat(float64(f.Hardware.Ram), 'f', -1, 32),
 			strconv.Itoa(f.Hardware.Cores),
 			strconv.Itoa(f.Hardware.CoresPerProcessor),
-			strconv.Itoa(f.Hardware.Hdds.Size),
+			strconv.Itoa(f.Hardware.Hdds[0].Size),
 		}
 	}
 	header := []string{"ID", "Name", "RAM (GB)", "Processor No.", "Cores per Processor", "Disk Size (GB)"}

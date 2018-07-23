@@ -46,21 +46,21 @@ func (c *restClient) Put(url string, requestBody interface{}, result interface{}
 func (c *restClient) doRequest(url string, method string, requestBody interface{}, result interface{}, expectedStatus int) error {
 	maxRetries := 5
 	retriesCount := 0
-	var bodyData io.Reader
-	if requestBody != nil {
-		data, err := json.Marshal(requestBody)
+
+	for {
+
+		var bodyData io.Reader
+		if requestBody != nil {
+			data, err := json.Marshal(requestBody)
+			if err != nil {
+				return err
+			}
+			bodyData = bytes.NewBuffer(data)
+		}
+		request, err := http.NewRequest(method, url, bodyData)
 		if err != nil {
 			return err
 		}
-		bodyData = bytes.NewBuffer(data)
-	}
-
-	request, err := http.NewRequest(method, url, bodyData)
-	if err != nil {
-		return err
-	}
-
-	for {
 		request.Header.Add("X-Token", c.token)
 		request.Header.Add("Content-Type", "application/json")
 
@@ -110,7 +110,7 @@ func (c *restClient) doRequest(url string, method string, requestBody interface{
 				if err != nil {
 					return err
 				}
-				return apiError{response.StatusCode, fmt.Sprintf("Type: %s; Message: %s", erResp.Type, erResp.Message)}
+				return ApiError{response.StatusCode, fmt.Sprintf("Type: %s; Message: %s", erResp.Type, erResp.Message)}
 			} else {
 				return c.unmarshal(body, result)
 			}

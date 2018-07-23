@@ -466,7 +466,7 @@ As we can see from the [How To's](#how-tos) examples, using 1&amp;1 Cloud Server
 
 **List Baremetal server models:**
 
-`oneandone baremetal models`
+`oneandone baremetalmodels`
 
 **Retrieve information about a baremetal server model:**
 
