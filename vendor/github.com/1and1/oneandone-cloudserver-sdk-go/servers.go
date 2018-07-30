@@ -11,22 +11,22 @@ type Server struct {
 	ApiPtr
 	Identity
 	descField
-	CreationDate  string           `json:"creation_date,omitempty"`
-	FirstPassword string           `json:"first_password,omitempty"`
-	ServerType    string           `json:"server_type,omitempty"`
-	Ipv6Range     string           `json:"ipv6_range,omitempty"`
-	Hostname      string           `json:"hostname,omitempty"`
-	Datacenter    *Datacenter      `json:"datacenter,omitempty"`
-	Status        *Status          `json:"status,omitempty"`
-	Hardware      *Hardware        `json:"hardware,omitempty"`
-	Image         *Identity        `json:"image,omitempty"`
-	Dvd           *Identity        `json:"dvd,omitempty"`
-	MonPolicy     *Identity        `json:"monitoring_policy,omitempty"`
-	Snapshot      *ServerSnapshot  `json:"snapshot,omitempty"`
-	Ips           []ServerIp       `json:"ips,omitempty"`
-	PrivateNets   []Identity       `json:"private_networks,omitempty"`
-	Alerts        *ServerAlerts    `json:"-"`
-	AlertsRaw     *json.RawMessage `json:"alerts,omitempty"`
+	CreationDate  string                 `json:"creation_date,omitempty"`
+	FirstPassword string                 `json:"first_password,omitempty"`
+	ServerType    string                 `json:"server_type,omitempty"`
+	Ipv6Range     string                 `json:"ipv6_range,omitempty"`
+	Hostname      string                 `json:"hostname,omitempty"`
+	Datacenter    *Datacenter            `json:"datacenter,omitempty"`
+	Status        *Status                `json:"status,omitempty"`
+	Hardware      *Hardware              `json:"hardware,omitempty"`
+	Image         *Identity              `json:"image,omitempty"`
+	Dvd           *Identity              `json:"dvd,omitempty"`
+	MonPolicy     *Identity              `json:"monitoring_policy,omitempty"`
+	Snapshot      *ServerSnapshot        `json:"snapshot,omitempty"`
+	Ips           []ServerIp             `json:"ips,omitempty"`
+	PrivateNets   []ServerPrivateNetwork `json:"private_networks,omitempty"`
+	Alerts        *ServerAlerts          `json:"-"`
+	AlertsRaw     *json.RawMessage       `json:"alerts,omitempty"`
 }
 
 type Hardware struct {
@@ -55,6 +55,11 @@ type serverDeployImage struct {
 	idField
 	Password string    `json:"password,omitempty"`
 	Firewall *Identity `json:"firewall_policy,omitempty"`
+}
+
+type ServerPrivateNetwork struct {
+	Identity
+	ServerIP string `json:"server_ip,omitempty"`
 }
 
 type ServerIp struct {
@@ -146,7 +151,7 @@ type BaremetalHardware struct {
 	CoresPerProcessor int     `json:"cores_per_processor"`
 	Ram               float32 `json:"ram"`
 	Unit              string  `json:"unit,omitempty"`
-	Hdds              Hdd     `json:"hdds,omitempty"`
+	Hdds              []Hdd   `json:"hdds,omitempty"`
 	ApiPtr
 }
 

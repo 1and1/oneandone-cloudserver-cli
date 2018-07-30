@@ -1,0 +1,13 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "JYu5CCVzfpBGJ7OIBhoPsFSvhDM=",
+			"path": "github.com/1and1/oneandone-cloudserver-sdk-go",
+			"revision": "9aef89021c6500ffb5a8a3a7c09168dfff46f78d",
+			"revisionTime": "2018-06-20T18:46:55Z"
+		}
+	],
+	"rootPath": "github.com/stackpointcloud/oneandone-cloudserver-cli"
+}

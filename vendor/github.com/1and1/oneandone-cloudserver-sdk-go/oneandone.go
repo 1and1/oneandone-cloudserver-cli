@@ -155,7 +155,7 @@ func (api *API) WaitUntilDeleted(in ApiInstance) error {
 	for in != nil {
 		_, err = in.GetState()
 		if err != nil {
-			if apiError, ok := err.(apiError); ok && apiError.httpStatusCode == http.StatusNotFound {
+			if apiError, ok := err.(ApiError); ok && apiError.httpStatusCode == http.StatusNotFound {
 				return nil
 			} else {
 				return err

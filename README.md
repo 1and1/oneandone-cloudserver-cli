@@ -13,6 +13,7 @@ For more information on the 1&amp;1 Cloud Server CLI see the [1&1 Community Port
 - [How To's](#how-tos)
   - [Firewall Policy Basics](#firewall-policy-basics)
   - [Create Server](#create-server)
+  - [Create Baremetal Server](#create-baremetal-server)
   - [Clone Server](#clone-server)
   - [List Servers](#list-servers)
   - [Hardware Update](#hardware-update)
@@ -256,6 +257,34 @@ oneandone server create --name "CLI Flex Server" --cpu 2 --cores 1 --ram 4 --hds
   --firewallid 78C1CCBAB64ECA846732AF37CA041C24 --osid B77E19E062D5818532EFF11C747BD104
 ```
 
+## Create Baremetal Server
+
+Baremetal servers deployed in 1&amp;1 Cloud environment must have a defined baremetal model ID. The ID and the configuration details of the desired model can be found using the following command:
+
+```
+oneandone baremetal server models
++----------------------------------+-------------+----------+---------------+---------------------+----------------+
+|                ID                |    NAME     | RAM (GB) | PROCESSOR NO  | CORES PER PROCESSOR | DISK SIZE (GB) |
++----------------------------------+-------------+----------+---------------+---------------------+----------------+
+| B77E19E062D5818532EFF11C747BD104 | BMC_S       | 16       | 1             | 4                   | 480            |
+| 7C5FA1D21B98DE39D7516333AAB7DA54 | BMC_S_HDD   | 16       | 1             | 4                   | 1000           |
+| 81504C620D98BCEBAA5202D145203B4B | BMC_L       | 32       | 1             | 4                   | 800            |
+| D2127B1C773877A693D718C78181D430 | BMC_L       | 32       | 1             | 4                   | 960            |
+| EB231935B1CFAC3D98D6FF4FBE74F6F6 | BMC_L_HDD   | 32       | 1             | 4                   | 2000           |
+| 6E1F2C70CCD3EE44ED194F4FFC47C4C9 | BMC_XL      | 64       | 1             | 4                   | 800            |
+| 8CC97EC5F18722F3F0263E5FB955D9FC | BMC_XL      | 64       | 1             | 4                   | 960            |
+| 758222E9C1806C144559AB3A14E58A83 | BMC_XL_HDD  | 64       | 1             | 4                   | 2000           |
++----------------------------------+-------------+----------+---------------+---------------------+----------------+
+```
+
+The next command illustrates how to create and power on a baremetal server of the "BMC_L_HDD" size .
+
+```
+oneandone server create --name "CLI Demo baremetal Server" --modelid EB231935B1CFAC3D98D6FF4FBE74F6F6 \
+  --poweron=true --password MyStrongPass123 --osid 33352CCE1E710AF200CD1234BFD18862
+```
+The required options are `--name`, `--fixsizeid` and `--osid`. 
+
 ## Clone Server
 
 To deploy exactly the same configuration you just need to supply the server ID and a name of the new server.
@@ -435,6 +464,14 @@ As we can see from the [How To's](#how-tos) examples, using 1&amp;1 Cloud Server
 
 `oneandone server flavor --id [flavor ID]`
 
+**List Baremetal server models:**
+
+`oneandone baremetalmodels`
+
+**Retrieve information about a baremetal server model:**
+
+`oneandone baremetalmodel --id [model ID]`
+
 **Retrieve information about a server's hardware:**
 
 `oneandone server hwinfo --id [server ID]`
@@ -509,6 +546,26 @@ oneandone server create \
    --loadbalancerid  [ID of the load balancer] \
    --monitorpolicyid [Monitoring policy ID to use with the server]
 ```
+
+**Create a baremetal server:**
+
+```
+oneandone createbaremetalServer create \
+   --datacenterid    [Data center ID] \
+   --modelid       [Fixed-instance size ID desired for the server] \
+   --name            [Name of the server] \
+   --desc            [Description of the server] \
+   --password        [Password of the server] \
+   --sshkeypath      [Path to SSH public key file] \
+   --poweron         [Power on the server after creating] \
+   --osid            [Server appliance ID] \
+   --ipid            [ID of the IP] \
+   --regionid        [Datacenter region ID] \
+   --firewallid      [ID of the firewall policy] \
+   --loadbalancerid  [ID of the load balancer] \
+   --monitorpolicyid [Monitoring policy ID to use with the server]
+```
+
 
 **Update a server:**
 

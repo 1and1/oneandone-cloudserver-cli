@@ -9,19 +9,19 @@ type errorResponse struct {
 	Message string `json:"message"`
 }
 
-type apiError struct {
+type ApiError struct {
 	httpStatusCode int
 	message        string
 }
 
-func (e apiError) Error() string {
+func (e ApiError) Error() string {
 	return fmt.Sprintf("%d - %s", e.httpStatusCode, e.message)
 }
 
-func (e *apiError) HttpStatusCode() int {
+func (e *ApiError) HttpStatusCode() int {
 	return e.httpStatusCode
 }
 
-func (e *apiError) Message() string {
+func (e *ApiError) Message() string {
 	return e.message
 }
