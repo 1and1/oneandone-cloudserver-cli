@@ -17,10 +17,13 @@ type FirewallPolicy struct {
 
 type FirewallPolicyRule struct {
 	idField
-	Protocol string `json:"protocol,omitempty"`
-	PortFrom *int   `json:"port_from,omitempty"`
-	PortTo   *int   `json:"port_to,omitempty"`
-	SourceIp string `json:"source,omitempty"`
+	Protocol    string `json:"protocol,omitempty"`
+	PortFrom    *int   `json:"port_from,omitempty"`
+	PortTo      *int   `json:"port_to,omitempty"`
+	Port        string `json:"port,omitempty"`
+	Action      string `json:"action,omitempty"`
+	Description string `json:"description,omitempty"`
+	SourceIp    string `json:"source,omitempty"`
 }
 
 type FirewallPolicyRequest struct {

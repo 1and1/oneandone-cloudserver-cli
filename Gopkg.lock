@@ -2,32 +2,44 @@
 
 
 [[projects]]
+  digest = "1:e9019bfdc816780c14f0efdf4d7f84a1e4cff717cd622cb4abe64028ffeaf40d"
   name = "github.com/1and1/oneandone-cloudserver-sdk-go"
   packages = ["."]
-  revision = "794121a0c7bed2f3206c33b91113e900a070c55e"
-  version = "v1.3.5"
+  pruneopts = "UT"
+  revision = "f75ae28bf408a4beaf8dd735c00a97e42f915e80"
+  version = "v1.4.1"
 
 [[projects]]
+  digest = "1:a210a57b96bf9a5f0fe20296593061edc858777375e0f6d96a06604246ad23c2"
   name = "github.com/codegangsta/cli"
   packages = ["."]
+  pruneopts = "UT"
   revision = "71f57d300dd6a780ac1856c005c4b518cfd498ec"
   version = "v1.14.0"
 
 [[projects]]
+  digest = "1:e2d1d410fb367567c2b53ed9e2d719d3c1f0891397bb2fa49afd747cfbf1e8e4"
   name = "github.com/mattn/go-runewidth"
   packages = ["."]
+  pruneopts = "UT"
   revision = "9e777a8366cce605130a531d2cd6363d07ad7317"
   version = "v0.0.2"
 
 [[projects]]
   branch = "master"
+  digest = "1:4daa045e1e1f3e23f4b07db6880cdf9f259dab65312dfe244a878e6070faaf77"
   name = "github.com/olekukonko/tablewriter"
   packages = ["."]
+  pruneopts = "UT"
   revision = "d4647c9c7a84d847478d890b816b7d8b62b0b279"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e6ab54b479fb2a5bd78da5e4dc558e7feaa0de94dc58f6c39b2a3c426bf0102d"
+  input-imports = [
+    "github.com/1and1/oneandone-cloudserver-sdk-go",
+    "github.com/codegangsta/cli",
+    "github.com/olekukonko/tablewriter",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1

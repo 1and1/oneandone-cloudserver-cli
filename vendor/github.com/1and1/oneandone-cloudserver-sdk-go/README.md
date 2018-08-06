@@ -577,8 +577,8 @@ request := oneandone.FirewallPolicyRequest {
     Rules: []oneandone.FirewallPolicyRule {
       {
         Protocol: protocol,
-        PortFrom: oneandone.Int2Pointer(port_from),
-        PortTo: oneandone.Int2Pointer(port_to),
+        Port: "80",
+		Action: "allow",        
         SourceIp: source_ip,
       },
     },
@@ -639,14 +639,13 @@ Passing an empty string in `fp_new_name` or `fp_new_description` skips updating 
 fp_rules := []oneandone.FirewallPolicyRule {
     {
       Protocol: protocol1,
-      PortFrom: oneandone.Int2Pointer(port_from1),
-      PortTo: oneandone.Int2Pointer(port_to1),
+      Port: "80",      
       SourceIp: source_ip,
     },
     {
       Protocol: protocol2,
-      PortFrom: oneandone.Int2Pointer(port_from2),
-      PortTo: oneandone.Int2Pointer(port_to2),
+      Port: "4000-5000",
+	  Action: "allow",
     },
   }
 
@@ -2398,7 +2397,7 @@ func (api *API) GetVPNConfigFile(vpn_id string) (string, error)
 ```
 
 ```Go
-func (api *API) ListBaremetalModels(args ...interface{}) ([]BaremetalModel, error)
+func (api *API) ListBaremetalModels() ([]BaremetalModel, error)
 ```
 
 ```Go
