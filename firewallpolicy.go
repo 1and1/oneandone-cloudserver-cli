@@ -29,6 +29,18 @@ func init() {
 			Name:  "source",
 			Usage: "IPs from which access is available. Default is 0.0.0.0 and all IPs are allowed.",
 		},
+		cli.StringSliceFlag{
+			Name:  "port",
+			Usage: "single port or a port range separated by '-' i.e. '4000-5000'",
+		},
+		cli.StringSliceFlag{
+			Name:  "action",
+			Usage: "Action to be done in the rule. Deny is only allowed with protocol ANY to deny all ports.",
+		},
+		cli.StringSliceFlag{
+			Name:  "description",
+			Usage: "Rule description.",
+		},
 	}
 
 	fIdFlag := cli.StringFlag{
@@ -146,9 +158,12 @@ func init() {
 
 // Helper function
 func parseFirewallRules(ctx *cli.Context) []oneandone.FirewallPolicyRule {
-	portsFrom := getIntSliceOption(ctx, "portfrom", true)
-	portsTo := getIntSliceOption(ctx, "portto", true)
+	portsFrom := getIntSliceOption(ctx, "portfrom", false)
+	portsTo := getIntSliceOption(ctx, "portto", false)
 	protocols := getStringSliceOption(ctx, "protocol", true)
+	ports := getStringSliceOption(ctx, "port", false)
+	actions := getStringSliceOption(ctx, "action", false)
+	descriptions := getStringSliceOption(ctx, "description", false)
 
 	if len(portsFrom) != len(portsTo) {
 		exitOnError(fmt.Errorf("equal number of --portfrom and --portto arguments must be specified"))
@@ -173,13 +188,18 @@ func parseFirewallRules(ctx *cli.Context) []oneandone.FirewallPolicyRule {
 			break
 		case "GRE":
 			break
+		case "ANY":
+			break
 		default:
-			exitOnError(fmt.Errorf("Invalid value for --protocol flag. Valid values are TCP, UDP, TCP/UDP, ICMP, IPSEC or GRE."))
+			exitOnError(fmt.Errorf("invalid value for --protocol flag. Valid values are TCP, UDP, TCP/UDP, ICMP, IPSEC, GRE or ANY"))
 		}
 
 		var source string
 		var fromPort *int
 		var toPort *int
+		var port string
+		var action string
+		var description string
 
 		if len(sources) > i {
 			source = sources[i]
@@ -189,11 +209,34 @@ func parseFirewallRules(ctx *cli.Context) []oneandone.FirewallPolicyRule {
 			toPort = oneandone.Int2Pointer(validateIntRange("portto", portsTo[i], 1, 65535))
 		}
 
+		if len(actions) > i {
+			action = actions[i]
+		}
+
+		if protocols[i] == "ANY" && strings.ToLower(action) != "deny" {
+			exitOnError(fmt.Errorf("protocol ANY is only allowed when the required action is deny"))
+		}
+
+		if len(ports) > i {
+			port = ports[i]
+		}
+
+		if len(descriptions) > i {
+			description = descriptions[i]
+		}
+
+		if len(portsFrom) == 0 && len(portsTo) == 0 && port == ""  && protocols[i] != "ANY"{
+			exitOnError(fmt.Errorf("must provide value for either --portsFrom and --portsTo or use the --port parameter"))
+		}
+
 		rule := oneandone.FirewallPolicyRule{
-			PortFrom: fromPort,
-			PortTo:   toPort,
-			Protocol: protocols[i],
-			SourceIp: source,
+			PortFrom:    fromPort,
+			PortTo:      toPort,
+			Protocol:    protocols[i],
+			SourceIp:    source,
+			Port:        port,
+			Action:      action,
+			Description: description,
 		}
 		rules = append(rules, rule)
 	}
